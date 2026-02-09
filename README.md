@@ -1,2 +1,2 @@
 # Display manager
-Display manager in demnu coded for personal use on i3wm 
+Display manager in dmenu coded for personal use on i3wm 
