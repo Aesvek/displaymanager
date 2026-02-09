@@ -1,2 +1,2 @@
-# Screen-settings
-monitor settings in demnu coded for personal use on i3wm 
+# Display manager
+Display manager in demnu coded for personal use on i3wm 
