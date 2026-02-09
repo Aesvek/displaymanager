@@ -1,23 +1,15 @@
-#!/bin/bash
-# i3/dmenu layered display manager
-# Requires: xrandr, dmenu
+#!/bin/bashr
+# Requires: xrandr, dmenu, x11
 
-# -----------------------
-# List wired displays (X11 only)
 list_wired() {
     xrandr --query | awk '/ connected/{print $1}'
 }
-
-# List available resolutions for a given display
-# Output format: 1920x1080 @ 60.00
 list_resolutions() {
     local output=$1
     xrandr --query \
     | sed -n "/^$output connected/,/^[^ ]/p" \
     | awk '/^[[:space:]]+[0-9]/{gsub(/[*+]/,"",$2); print $1 " @ " $2}'
 }
-
-# Ask for primary display if not set
 get_primary() {
     primary=$(xrandr --query | awk '/ connected primary/{print $1}')
 
@@ -30,26 +22,17 @@ get_primary() {
     echo "$primary"
 }
 
-# Choose position relative to primary
 choose_position() {
     printf "left\nright\nabove\nbelow\nclone" | dmenu -i -p "Position relative to main:"
 }
-
-# Choose rotation for the display
 choose_rotation() {
     printf "normal\nleft\nright\ninverted\nskip" | dmenu -i -p "Rotation:"
 }
-
-# Show done message via dmenu
 show_done() {
     printf "%s" "$1" | dmenu -p "Done:"
 }
-
-# Configure a display
 configure_display() {
     local output=$1
-
-    # Check if active
     status=$(xrandr --query | awk -v o="$output" '$1==o{print $2}')
     [[ "$status" == "connected" ]] && current="on" || current="off"
 
@@ -105,8 +88,6 @@ configure_display() {
 
     show_done "$output set to $resolution @${refresh}Hz ($pos)${rotation:+, rotated $rotation}"
 }
-
-# -----------------------
 main_menu() {
     options="$(list_wired)\nExit"
     choice=$(printf "%b" "$options" | dmenu -i -p "Select display:")
