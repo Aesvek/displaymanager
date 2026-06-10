@@ -1,5 +1,5 @@
 #!/bin/bashr
-# Requires: xrandr, dmenu, x11
+# Requires: xrandr, dmenu, x11 and willingness to live:)
 
 list_wired() {
     xrandr --query | awk '/ connected/{print $1}'
